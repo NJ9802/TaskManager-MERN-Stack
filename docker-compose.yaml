@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  mongodb_contenedor:
+    image: mongo
+
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+    env_file:
+      - .env
+
+    volumes:
+      - ./mongo-volume:/data/db
+
+    ports:
+      - 27017:27017
+
+  web:
+    depends_on:
+      mongodb_contenedor:
+        condition: service_healthy
+
+    build:
+      context: .
+      target: production
+
+    env_file:
+      - .env
+
+    ports:
+      - 3000:3000
+
+    restart: always
+
+    volumes:
+      - ./:/usr/src/app
