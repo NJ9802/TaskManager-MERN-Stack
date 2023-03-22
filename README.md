@@ -33,7 +33,7 @@ npm run dev
 To use my app via Docker Compose, you'll need to follow these steps:
 
     1- Make sure you have Docker installed on your machine.
-    2- Download the image from our Docker Hub repository using the following command: docker pull [image name].
+    2- Download the image from our Docker Hub repository using the following command: docker pull nj9802/taskmanager-mern-stack.
     3- Download the docker-compose file from this repository
     4- Run the following command in the same directory of the docker-compose file: docker-compose up
 
