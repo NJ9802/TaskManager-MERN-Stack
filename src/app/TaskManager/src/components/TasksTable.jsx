@@ -20,7 +20,7 @@ const TasksTable = ({ props }) => {
   const cookies = new Cookies();
 
   // Declare constants for each of the props passed into this component, and assign them the corresponding values from props
-  const { tasks, host, toast, setValues, getTasks } = props;
+  const { tasks, host, toast, setValues, getTasks, scroll, setScroll } = props;
 
   // Declare a constant variable called "token" and assign it the value of the TOKEN cookie from cookies
   const token = cookies.get("TOKEN");
@@ -28,16 +28,19 @@ const TasksTable = ({ props }) => {
   // Declare a scrollRef variable using useRef hook to store a reference to an element
   const scrollRef = useRef();
 
-  // Use useEffect hook to call scrollToEnd function when tasks changes
-  useEffect(() => {
-    scrollToEnd();
-  }, [tasks]);
-
   // Define a function called scrollToEnd that sets the scrollTop property of an element to its own scrollHeight property
   const scrollToEnd = () => {
     const scrollDiv = scrollRef.current;
     scrollDiv.scrollTop = scrollDiv.scrollHeight;
   };
+
+  // Use useEffect hook to call scrollToEnd function when tasks changes
+  useEffect(() => {
+    if (scroll) {
+      scrollToEnd();
+      setScroll(false);
+    }
+  }, [scroll]);
 
   // Define an async function called handleDelete that takes in an id as argument and makes a DELETE request to delete task with that id
   const handleDelete = async (id) => {

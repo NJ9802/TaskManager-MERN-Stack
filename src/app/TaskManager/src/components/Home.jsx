@@ -34,6 +34,8 @@ const Home = () => {
     tasks: [],
   });
 
+  const [scroll, setScroll] = useState(false);
+
   // Toast function to display messages with variant and autoHideDuration of 3 seconds
   const toast = (message, variant) => {
     enqueueSnackbar(message, { variant, autoHideDuration: 3000 });
@@ -88,7 +90,8 @@ const Home = () => {
       }
 
       toast(data.status, "success");
-      getTasks();
+      await getTasks();
+      !values.id && setScroll(true);
     } catch (err) {
       toast(err.message, "error");
     }
@@ -169,6 +172,8 @@ const Home = () => {
                   toast,
                   getTasks,
                   setValues,
+                  scroll,
+                  setScroll,
                 }}
               />
             </Box>
