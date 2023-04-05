@@ -4,7 +4,7 @@ body,
 #root,
 .app,
 .content {
-  height: 100%;
+  height: calc(100vh - 16px);
   width: 100%;
   font-family: "Source Sans Pro", sans-serif;
 }
