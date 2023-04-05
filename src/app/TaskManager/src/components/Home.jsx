@@ -55,30 +55,40 @@ const Home = () => {
     }
   };
 
+  const fetcher = async ({ query, method, bodyData }) => {
+    const response = await fetch(`${host}/api/tasks/${query}`, {
+      method,
+      headers,
+      body: JSON.stringify(bodyData),
+    });
+
+    const data = response.json();
+    return data;
+  };
+
   // Handle submit of form - if "id" is present update task else create task
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    let data;
+
     try {
       if (values.id) {
-        const response = await fetch(`${host}/api/tasks/${values.id}`, {
+        data = await fetcher({
+          query: values.id,
           method: "PUT",
-          headers,
-          body: JSON.stringify(values),
+          bodyData: values,
         });
-        const data = await response.json();
-        toast(data.status, "success");
-        getTasks();
       } else {
-        const response = await fetch(`${host}/api/tasks/${userId}`, {
+        data = await fetcher({
+          query: userId,
           method: "POST",
-          headers,
-          body: JSON.stringify({ ...values, user: userId }),
+          bodyData: { ...values, user: userId },
         });
-        const data = await response.json();
-        toast(data.status, "success");
-        getTasks();
       }
+
+      toast(data.status, "success");
+      getTasks();
     } catch (err) {
       toast(err.message, "error");
     }
